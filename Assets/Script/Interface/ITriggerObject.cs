@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface ITriggerObject
 {
-    public Vector3 StandingPosition { set; get; }
+
 
 }
