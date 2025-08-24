@@ -5,5 +5,8 @@ using UnityEngine;
 public class Crate : MonoBehaviour, ITriggerObject
 {
 
+    public void TriggerEvent()
+    {
 
+    }
 }

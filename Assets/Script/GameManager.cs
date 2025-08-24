@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private LoadingScene _loadingScene;
     [SerializeField] private MovePlayerController _movePlayerController;
     [SerializeField] private MarkerController _markerController;
+    [SerializeField] private PlayerHandController _playerHandController;
 
     [SerializeField] private Player _player;
     // [SerializeField] private Player 
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour
         _raycastController = Instantiate(_raycastController);
         _movePlayerController = Instantiate(_movePlayerController);
         _markerController = Instantiate(_markerController);
+        _playerHandController = Instantiate(_playerHandController);
 
 
     }
@@ -66,16 +68,27 @@ public class GameManager : MonoBehaviour
         _markerController.SetMoveMarker(_moveMarkObj);
         _markerController.SetTriggerMarker(_triggerMarkObj);
 
-
         _movePlayerController.SetPlayer(_player.gameObject);
-        _movePlayerController.SubscribeOnEndMove(_markerController.HideMoveMark);
-        _movePlayerController.SubscribeOnEndMove(_markerController.HideTriggerObjMark);
-
 
         _raycastController.SetPlayer(_player.gameObject);
-        _raycastController.SubscribeDetectPoint(_movePlayerController.MovePlayer);
-        _raycastController.SubscribeDetectPoint(_markerController.ShowMoveMark);
-        _raycastController.SubscribeDetectObj(_markerController.ShowTriggerObjMark);
+
+        _playerHandController.SetPlayer(_player);
+
+
+        ObserverManager.AddListener<Vector3>(ObserverEvent.RayCastDetectPoint, _movePlayerController.MovePlayer);
+        ObserverManager.AddListener<Vector3>(ObserverEvent.RayCastDetectPoint, _markerController.ShowMoveMark);
+        ObserverManager.AddListener<GameObject>(ObserverEvent.RayCastDetectObj, _markerController.ShowTriggerObjMark);
+
+        ObserverManager.AddListener(ObserverEvent.EndMoveNavigation, _markerController.HideMoveMark);
+        ObserverManager.AddListener(ObserverEvent.EndMoveNavigation, _markerController.HideTriggerObjMark);
+
+
+
+
+
+
+
+
 
 
 

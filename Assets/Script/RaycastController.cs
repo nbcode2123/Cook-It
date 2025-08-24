@@ -7,37 +7,17 @@ using UnityEngine.AI;
 public class RaycastController : MonoBehaviour
 {
     public GameObject _player;
-    private event Action<Vector3> OnDetectPoint = delegate { };
-    private event Action<GameObject> OnDetectObject = delegate { };
+    [SerializeField] private ITriggerObject _currentTriggerObject;
+    [SerializeField] private GameObject _currentColliderDetected;
 
     private Vector3 test;
     public void SetPlayer(GameObject obj)
     {
         _player = obj;
     }
-    public void SubscribeDetectPoint(Action<Vector3> action)
-    {
-        OnDetectPoint -= action;
-        OnDetectPoint += action;
-    }
 
 
-    public void UnSubscribeDetectPoint(Action<Vector3> action)
-    {
-        OnDetectPoint -= action;
-    }
-    public void SubscribeDetectObj(Action<GameObject> action)
-    {
-        OnDetectObject -= action;
-        OnDetectObject += action;
-    }
-
-
-    public void UnSubscribeDetectObj(Action<GameObject> action)
-    {
-        OnDetectObject -= action;
-    }
-    private void Update()
+    private void CheckHit()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -46,11 +26,20 @@ public class RaycastController : MonoBehaviour
             {
                 if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Floor"))
                 {
-                    OnDetectPoint?.Invoke(hit.point);
+                    ObserverManager.Notify(ObserverEvent.RayCastDetectPoint, hit.point);
+
                 }
                 else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("TriggerObject"))
                 {
-                    OnDetectObject?.Invoke(hit.collider.gameObject);
+                    _currentColliderDetected = hit.collider.gameObject;
+                    if (_currentColliderDetected.gameObject.GetComponent<ITriggerObject>() != null)
+                    {
+                        _currentTriggerObject = _currentColliderDetected.gameObject.GetComponent<ITriggerObject>();
+                        ObserverManager.Notify(ObserverEvent.RayCastDetectObj, hit.collider.gameObject);
+                        ObserverManager.AddListener(ObserverEvent.EndMoveNavigation, _currentTriggerObject.TriggerEvent);
+
+
+                    }
                     Vector3 playerPos = new Vector3(_player.transform.position.x, 0, _player.transform.position.z);
                     Vector3 hitPos = new Vector3(hit.collider.gameObject.transform.position.x, 0, hit.collider.gameObject.transform.position.z);
 
@@ -60,7 +49,10 @@ public class RaycastController : MonoBehaviour
                     test = hit.point + direction;
                     if (NavMesh.SamplePosition(hit.point + direction, out navMeshHit, 1.5f, NavMesh.AllAreas))
                     {
-                        OnDetectPoint?.Invoke(navMeshHit.position);
+                        ObserverManager.Notify(ObserverEvent.RayCastDetectPoint, navMeshHit.position);
+
+
+
 
 
 
@@ -72,6 +64,10 @@ public class RaycastController : MonoBehaviour
                 }
             }
         }
+    }
+    private void Update()
+    {
+        CheckHit();
     }
     private void OnDrawGizmos()
     {

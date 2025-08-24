@@ -62,7 +62,7 @@ public class MovePlayerController : MonoBehaviour
                 if (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude == 0f)
                 {
                     Debug.Log("Đến đích");
-                    OnEndMove?.Invoke();
+                    ObserverManager.Notify(ObserverEvent.EndMoveNavigation);
                     OnMove -= CheckPos;
                 }
             }
