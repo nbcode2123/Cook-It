@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface ITriggerObject
 {
-    public void TriggerEvent();
+    public void TriggerEvent(PlayerHandController playerHandController);
 
 
 }

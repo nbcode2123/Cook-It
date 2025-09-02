@@ -10,6 +10,7 @@ public class PlayerHandController : MonoBehaviour
     private void Awake()
     {
         ObserverManager.AddListener<GameObject>(ObserverEvent.TriggerObjectTakeItem, PutItemToHand);
+        ObserverManager.AddListener<ShelfSlot>(ObserverEvent.PutItemToShelf, SwapItemInHand);
     }
     public void SetPlayer(Player player)
     {
@@ -21,18 +22,99 @@ public class PlayerHandController : MonoBehaviour
     {
         _playerHand = hand;
     }
+    public bool isHandEmpty()
+    {
+        if (_itemInHand == null)
+        {
+            return true;
+
+        }
+        else
+        {
+            return false;
+        }
+
+    }
+    public GameObject GetCurrentItemInHand()
+    {
+        return _itemInHand;
+    }
     public void PutItemToHand(GameObject item)
     {
-        if (_itemInHand != null)
-        {
-            Destroy(_itemInHand); //! test
-        }
-        _itemInHand = Instantiate(item);
-        // _itemInHand = item;
+
+
+        _itemInHand = item;
         _itemInHand.transform.position = _playerHand.transform.position;
         _itemInHand.transform.parent = _player.transform;
 
+
+
+
     }
+    public bool isKitchenwareInHand()
+    {
+        if (_itemInHand == null)
+        {
+            return false;
+        }
+        else
+        {
+            if (_itemInHand.GetComponent<IKitchenware>() == null)
+            {
+                return false;
+            }
+            else return true;
+        }
+    }
+    public bool isFoodIngredientInHand()
+    {
+        if (_itemInHand == null)
+        {
+            return false;
+        }
+        else
+        {
+            if (_itemInHand.GetComponent<IFoodIngredient>() == null)
+            {
+                return false;
+            }
+            else return true;
+        }
+    }
+
+    public void SwapItemInHand(ShelfSlot shelfSlot)
+    {
+
+        GameObject tempObject = shelfSlot.GetCurrentItem();
+        if (_itemInHand != null)
+        {
+            shelfSlot.SetCurrentShelf(_itemInHand);
+
+        }
+        else
+        {
+            shelfSlot.EmptySlot();
+        }
+        if (tempObject == null)
+        {
+            _itemInHand = null;
+            Debug.Log("tay null");
+        }
+        else
+        {
+            Debug.Log("Tay cam object");
+            PutItemToHand(tempObject);
+
+        }
+
+
+
+    }
+    public void EmptyHand()
+    {
+        _itemInHand = null;
+    }
+
 
     // Start is called before the first frame update
     void Start()

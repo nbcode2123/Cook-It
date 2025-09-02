@@ -45,5 +45,6 @@ public class MarkerController : MonoBehaviour
     public void HideTriggerObjMark()
     {
         _triggerMarkObj.SetActive(false);
+
     }
 }

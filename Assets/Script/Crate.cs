@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class Crate : MonoBehaviour, ITriggerObject
 {
-
-    public void TriggerEvent()
+    [SerializeField] private IFoodIngredient Ingredient;
+    public void TriggerEvent(PlayerHandController playerHandController)
     {
-
+        if (playerHandController.isHandEmpty())
+        {
+            GameObject tempIngredient = Instantiate(Ingredient.gameObject);
+            playerHandController.PutItemToHand(tempIngredient);
+        }
+        ObserverManager.RemoveListener<PlayerHandController>(ObserverEvent.EndMoveNavigation, TriggerEvent);
     }
 }

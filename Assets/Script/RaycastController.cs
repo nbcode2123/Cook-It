@@ -9,6 +9,7 @@ public class RaycastController : MonoBehaviour
     public GameObject _player;
     [SerializeField] private ITriggerObject _currentTriggerObject;
     [SerializeField] private GameObject _currentColliderDetected;
+    [SerializeField] private Action<PlayerHandController> _lastEvent;
 
     private Vector3 test;
     public void SetPlayer(GameObject obj)
@@ -27,6 +28,7 @@ public class RaycastController : MonoBehaviour
                 if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Floor"))
                 {
                     ObserverManager.Notify(ObserverEvent.RayCastDetectPoint, hit.point);
+                    ObserverManager.RemoveListener(ObserverEvent.EndMoveNavigation, _lastEvent);
 
                 }
                 else if (hit.collider.gameObject.layer == LayerMask.NameToLayer("TriggerObject"))
@@ -36,7 +38,12 @@ public class RaycastController : MonoBehaviour
                     {
                         _currentTriggerObject = _currentColliderDetected.gameObject.GetComponent<ITriggerObject>();
                         ObserverManager.Notify(ObserverEvent.RayCastDetectObj, hit.collider.gameObject);
-                        ObserverManager.AddListener(ObserverEvent.EndMoveNavigation, _currentTriggerObject.TriggerEvent);
+
+                        ObserverManager.RemoveListener<PlayerHandController>(ObserverEvent.EndMoveNavigation, _lastEvent);
+
+                        ObserverManager.AddListener<PlayerHandController>(ObserverEvent.EndMoveNavigation, _currentTriggerObject.TriggerEvent);
+                        _lastEvent = _currentTriggerObject.TriggerEvent;
+
 
 
                     }
@@ -48,8 +55,11 @@ public class RaycastController : MonoBehaviour
                     NavMeshHit navMeshHit;
                     test = hit.point + direction;
                     if (NavMesh.SamplePosition(hit.point + direction, out navMeshHit, 1.5f, NavMesh.AllAreas))
+
                     {
                         ObserverManager.Notify(ObserverEvent.RayCastDetectPoint, navMeshHit.position);
+                        ObserverManager.Notify(ObserverEvent.RayCastDetectObj, hit.collider.gameObject);
+
 
 
 

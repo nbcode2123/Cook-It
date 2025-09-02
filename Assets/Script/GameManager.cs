@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
         _markerController.SetTriggerMarker(_triggerMarkObj);
 
         _movePlayerController.SetPlayer(_player.gameObject);
+        _movePlayerController.SetPlayerHandController(_playerHandController);
 
         _raycastController.SetPlayer(_player.gameObject);
 
@@ -96,3 +97,4 @@ public class GameManager : MonoBehaviour
 
 
 }
+

@@ -69,12 +69,13 @@ public class ObserverManager
     {
         if (!Listeners.ContainsKey(name)) return;
 
-        foreach (var listener in Listeners[name])
+        for (int i = 0; i < Listeners[name].Count; i++)
         {
-            if (listener is Action<T> action)
+            if (Listeners[name][i] is Action<T> action)
             {
 
-                action.Invoke(param);
+                action?.Invoke(param);
+
 
             }
         }
@@ -102,5 +103,6 @@ public enum ObserverEvent
     EndMoveNavigation,
     RayCastDetectPoint,
     RayCastDetectObj,
-    TriggerObjectTakeItem
+    TriggerObjectTakeItem,
+    PutItemToShelf
 }

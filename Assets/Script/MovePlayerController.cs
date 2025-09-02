@@ -8,6 +8,7 @@ public class MovePlayerController : MonoBehaviour
 {
     [SerializeField] private NavMeshAgent _navMeshAgent;
     [SerializeField] private GameObject _player;
+    [SerializeField] private PlayerHandController _playerHandController;
     private Action OnMove;
     public Action OnEndMove;
 
@@ -22,15 +23,12 @@ public class MovePlayerController : MonoBehaviour
         OnMove?.Invoke();
 
     }
-    public void SubscribeOnEndMove(Action action)
+    public void SetPlayerHandController(PlayerHandController playerHandController)
     {
-        OnEndMove -= action;
-        OnEndMove += action;
+        _playerHandController = playerHandController;
+
     }
-    public void UnSubscribeOnEndMove(Action action)
-    {
-        OnEndMove -= action;
-    }
+
     public void SetPlayer(GameObject player)
     {
         _player = player;
@@ -61,8 +59,8 @@ public class MovePlayerController : MonoBehaviour
             {
                 if (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude == 0f)
                 {
-                    Debug.Log("Đến đích");
                     ObserverManager.Notify(ObserverEvent.EndMoveNavigation);
+                    ObserverManager.Notify(ObserverEvent.EndMoveNavigation, _playerHandController);
                     OnMove -= CheckPos;
                 }
             }

@@ -1,18 +1,24 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Plate : MonoBehaviour
+public class Plate : MonoBehaviour, IKitchenware
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Transform _pivotSurface;
+    public List<IFoodIngredient> _listFoodIngredientInPlate = new List<IFoodIngredient>();
+    public void KitchenwareFunction(PlayerHandController playerHandController)
     {
-        
+        _listFoodIngredientInPlate.Add(playerHandController.GetCurrentItemInHand().GetComponent<IFoodIngredient>());
+        playerHandController.GetCurrentItemInHand().GetComponent<IFoodIngredient>().gameObject.transform.parent = gameObject.transform;
+        playerHandController.GetCurrentItemInHand().GetComponent<IFoodIngredient>().gameObject.transform.position = _pivotSurface.position;
+        playerHandController.EmptyHand();
+
+    }
+    public void CheckFoodIngredientInPlate()
+    {
+
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

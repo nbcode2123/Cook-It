@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3570628210721624698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3070255173987973361}
+  - component: {fileID: 997423630603047555}
+  m_Layer: 0
+  m_Name: Lettuce
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3070255173987973361
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3570628210721624698}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &997423630603047555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3570628210721624698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481ad4282f48adc4399870fda465a426, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 0
+  _nameIngredient: 3
+  _currentStateIngredient: 0
+  _currentPrefab: {fileID: 0}
+  _ingredientPrototype:
+  - _stateIngredient: 0
+    _prefab: {fileID: 4958018407570346707, guid: c7188a890f298814990bad411e54bc37, type: 3}
+  - _stateIngredient: 3
+    _prefab: {fileID: 8621389132194396642, guid: f1590656ed2a2b14aa42aa969ccc255a, type: 3}
+  - _stateIngredient: 4
+    _prefab: {fileID: 6385451519867272745, guid: 812789b81d4886d4eb7cfa0e96980fd4, type: 3}

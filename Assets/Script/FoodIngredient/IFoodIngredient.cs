@@ -51,7 +51,10 @@ public enum StateIngredient
 {
     Raw,
     Cooked,
-    Burn
+    Burn,
+    Chopped,
+    Slice
+
 }
 public enum NameIngredient
 {
