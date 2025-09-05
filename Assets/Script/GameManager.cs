@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
+
+
 
 using UnityEngine;
 
@@ -24,6 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private MovePlayerController _movePlayerController;
     [SerializeField] private MarkerController _markerController;
     [SerializeField] private PlayerHandController _playerHandController;
+    [SerializeField] private OrderSystem _orderSystem;
 
     [SerializeField] private Player _player;
     // [SerializeField] private Player 
@@ -50,20 +53,21 @@ public class GameManager : MonoBehaviour
         _movePlayerController = Instantiate(_movePlayerController);
         _markerController = Instantiate(_markerController);
         _playerHandController = Instantiate(_playerHandController);
+        _orderSystem = Instantiate(_orderSystem);
 
 
     }
-    private async Task InitializationObject()
+    private async UniTask InitializationObject()
     {
 
     }
-    private async Task CreateObject()
+    private async UniTask CreateObject()
     {
         _player = Instantiate(_player);
         _moveMarkObj = Instantiate(_moveMarkObj);
         _triggerMarkObj = Instantiate(_triggerMarkObj);
     }
-    private async Task PreparingGame()
+    private async UniTask PreparingGame()
     {
         _markerController.SetMoveMarker(_moveMarkObj);
         _markerController.SetTriggerMarker(_triggerMarkObj);
